@@ -2,562 +2,410 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Good Morning Annu 🌸</title>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Good Morning Annu</title>
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --gold: #FFD700;
-    --rose: #FF6B9D;
-    --peach: #FFAD60;
-    --sky: #87CEEB;
-    --lavender: #DDA0DD;
-    --mint: #98FFD6;
-  }
+body {
+  background: #0d0025;
+  overflow-x: hidden;
+  min-height: 100vh;
+  font-family: Georgia, serif;
+}
 
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: #0a0015;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-  }
+/* ===== COUNTDOWN ===== */
+#cd {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, #1f0045 0%, #0d0025 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 1s ease, transform 1s ease;
+}
+#cd.gone { opacity: 0; transform: scale(2); pointer-events: none; }
 
-  /* COUNTDOWN SCREEN */
-  #countdown-screen {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(ellipse at center, #1a0030 0%, #0a0015 70%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
+#cdnum {
+  font-size: min(40vw, 180px);
+  font-weight: 900;
+  font-family: Impact, Arial Black, sans-serif;
+  background: linear-gradient(135deg, #FFD700, #FF6B9D, #87CEEB);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  animation: cdpulse 0.9s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(255,215,0,0.7));
+  line-height: 1;
+}
+@keyframes cdpulse {
+  0%,100% { transform: scale(1) rotateY(0deg); }
+  50% { transform: scale(1.15) rotateY(12deg); }
+}
+#cdlabel {
+  font-size: min(5vw, 22px);
+  color: #DDA0DD;
+  margin-top: 20px;
+  letter-spacing: 4px;
+  opacity: 0.85;
+  text-align: center;
+  padding: 0 20px;
+}
 
-  #countdown-screen.hide {
-    opacity: 0;
-    transform: scale(1.5);
-    pointer-events: none;
-  }
+/* ===== STARS ===== */
+#stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.st {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: twk var(--d) var(--del) ease-in-out infinite;
+}
+@keyframes twk {
+  0%,100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.8); }
+}
 
-  .countdown-number {
-    font-family: 'Pacifico', cursive;
-    font-size: clamp(80px, 25vw, 180px);
-    background: linear-gradient(135deg, var(--gold), var(--peach), var(--rose));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: pulse3d 1s ease-in-out infinite;
-    filter: drop-shadow(0 0 30px rgba(255,215,0,0.8));
-    text-align: center;
-  }
+/* ===== AURORA ===== */
+#aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(255,107,157,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 80% 70%, rgba(135,206,235,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 40% at 50% 10%, rgba(255,215,0,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at center, #1a0040 0%, #0d0025 100%);
+  animation: aur 7s ease-in-out infinite alternate;
+}
+@keyframes aur {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  100% { filter: hue-rotate(25deg) brightness(1.1); }
+}
 
-  .countdown-label {
-    font-family: 'Dancing Script', cursive;
-    font-size: clamp(18px, 5vw, 28px);
-    color: var(--lavender);
-    margin-top: 20px;
-    opacity: 0.8;
-    letter-spacing: 3px;
-  }
+/* ===== PARTICLES ===== */
+#ptc {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+.p {
+  position: absolute;
+  font-size: var(--s);
+  animation: pfloat var(--d) var(--del) linear infinite;
+  bottom: -30px;
+  opacity: 0;
+}
+@keyframes pfloat {
+  0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.5); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.7; }
+  100% { transform: translateY(-105vh) translateX(var(--dx)) rotate(720deg) scale(1.2); opacity: 0; }
+}
 
-  @keyframes pulse3d {
-    0%, 100% { transform: scale(1) rotateY(0deg); filter: drop-shadow(0 0 30px rgba(255,215,0,0.8)); }
-    50% { transform: scale(1.1) rotateY(10deg); filter: drop-shadow(0 0 60px rgba(255,215,0,1)); }
-  }
+/* ===== MAIN ===== */
+#main {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px 16px 60px;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+#main.show { opacity: 1; }
 
-  /* STARS */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .star {
-    position: absolute;
-    border-radius: 50%;
-    background: white;
-    animation: twinkle var(--d) ease-in-out infinite;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.5); }
-  }
+/* ===== RAINBOW BORDER ===== */
+.rborder {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+.rborder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 5px solid transparent;
+  border-image: linear-gradient(var(--ang,0deg), #FF6B9D, #FFD700, #87CEEB, #98FFD6, #DDA0DD, #FF6B9D) 1;
+  animation: rbAnim 3s linear infinite;
+}
+@keyframes rbAnim {
+  0%   { --ang: 0deg; }
+  100% { --ang: 360deg; }
+}
+@property --ang {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
-  /* MAIN SCREEN */
-  #main-screen {
-    position: fixed;
-    inset: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-    padding-bottom: 40px;
-  }
-  #main-screen.show { opacity: 1; }
+/* ===== SUN ===== */
+.sun {
+  font-size: min(22vw, 100px);
+  display: inline-block;
+  animation: sunrot 6s linear infinite, sunpulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px #FFD700) drop-shadow(0 0 50px #FF8C00);
+  margin-bottom: 0px;
+}
+@keyframes sunrot {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes sunpulse {
+  0%,100% { filter: drop-shadow(0 0 20px #FFD700) drop-shadow(0 0 40px #FF8C00); }
+  50% { filter: drop-shadow(0 0 50px #FFD700) drop-shadow(0 0 90px #FF8C00); }
+}
 
-  /* AURORA BG */
-  .aurora {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 20% 30%, rgba(255,107,157,0.25) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 60% at 80% 70%, rgba(135,206,235,0.2) 0%, transparent 60%),
-      radial-gradient(ellipse 70% 40% at 50% 10%, rgba(255,215,0,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at center, #1a0040 0%, #0a0020 100%);
-    animation: auroraMorph 8s ease-in-out infinite alternate;
-  }
-  @keyframes auroraMorph {
-    from { filter: hue-rotate(0deg); }
-    to { filter: hue-rotate(30deg); }
-  }
+/* ===== GOOD MORNING TEXT ===== */
+.gm {
+  font-size: min(12vw, 72px);
+  font-weight: 900;
+  font-family: Impact, Arial Black, sans-serif;
+  text-align: center;
+  animation: blink3d 1.4s ease-in-out infinite;
+  display: block;
+  line-height: 1.15;
+  letter-spacing: 2px;
+}
+.bro {
+  font-size: min(10vw, 60px);
+  font-weight: 900;
+  font-family: Impact, Arial Black, sans-serif;
+  text-align: center;
+  animation: blink3d 1.4s 0.4s ease-in-out infinite;
+  display: block;
+  line-height: 1.2;
+}
 
-  /* FLOATING PARTICLES */
-  .particle-container {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-  }
-  .particle {
-    position: absolute;
-    font-size: var(--s);
-    animation: floatUp var(--d) linear infinite;
-    opacity: 0;
-    bottom: -20px;
-  }
-  @keyframes floatUp {
-    0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.5); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 0.8; }
-    100% { transform: translateY(-110vh) translateX(var(--dx)) rotate(720deg) scale(1.2); opacity: 0; }
-  }
+@keyframes blink3d {
+  0%   { color: #FF6B9D; text-shadow: 5px 5px 0 #000, 0 0 30px #FF6B9D, 0 0 60px #FF6B9D; transform: rotateY(-10deg); }
+  16%  { color: #FFD700; text-shadow: 5px 5px 0 #000, 0 0 30px #FFD700, 0 0 60px #FFD700; transform: rotateY(0deg); }
+  32%  { color: #87CEEB; text-shadow: 5px 5px 0 #000, 0 0 30px #87CEEB, 0 0 60px #87CEEB; transform: rotateY(10deg); }
+  48%  { color: #98FFD6; text-shadow: 5px 5px 0 #000, 0 0 30px #98FFD6, 0 0 60px #98FFD6; transform: rotateY(0deg); }
+  64%  { color: #DDA0DD; text-shadow: 5px 5px 0 #000, 0 0 30px #DDA0DD, 0 0 60px #DDA0DD; transform: rotateY(-10deg); }
+  80%  { color: #FFAD60; text-shadow: 5px 5px 0 #000, 0 0 30px #FFAD60, 0 0 60px #FFAD60; transform: rotateY(0deg); }
+  100% { color: #FF6B9D; text-shadow: 5px 5px 0 #000, 0 0 30px #FF6B9D, 0 0 60px #FF6B9D; transform: rotateY(-10deg); }
+}
 
-  /* MAIN CONTENT */
-  .main-content {
-    position: relative;
-    z-index: 10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 30px 20px;
-  }
+/* ===== ANNU NAME ===== */
+.annu {
+  font-size: min(20vw, 110px);
+  font-weight: 900;
+  font-family: Impact, Arial Black, sans-serif;
+  text-align: center;
+  display: block;
+  letter-spacing: 8px;
+  margin: 8px 0;
+  animation: annuGlow 2.5s ease-in-out infinite, annuFloat 3.5s ease-in-out infinite;
+}
+@keyframes annuGlow {
+  0%   { color: #FF6B9D; text-shadow: 0 0 20px #FF6B9D, 0 0 50px #FF6B9D, 6px 6px 0 #8B0000; }
+  33%  { color: #FFD700; text-shadow: 0 0 20px #FFD700, 0 0 50px #FFD700, 6px 6px 0 #8B6000; }
+  66%  { color: #98FFD6; text-shadow: 0 0 20px #98FFD6, 0 0 50px #98FFD6, 6px 6px 0 #006040; }
+  100% { color: #FF6B9D; text-shadow: 0 0 20px #FF6B9D, 0 0 50px #FF6B9D, 6px 6px 0 #8B0000; }
+}
+@keyframes annuFloat {
+  0%,100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-14px) scale(1.04); }
+}
 
-  /* 3D GOOD MORNING TEXT */
-  .gm-wrapper {
-    perspective: 600px;
-    margin-top: 10px;
-    text-align: center;
-  }
+/* ===== CARDS ===== */
+.card {
+  background: rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 20px 22px;
+  margin: 10px 0;
+  width: min(92vw, 480px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  animation: cardf var(--cf) ease-in-out infinite;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  animation: shine 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes shine {
+  0% { left: -120%; }
+  100% { left: 200%; }
+}
+@keyframes cardf {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
 
-  .gm-text {
-    font-family: 'Pacifico', cursive;
-    font-size: clamp(36px, 11vw, 90px);
-    animation: textBlink 1.5s ease-in-out infinite, rotate3d 6s ease-in-out infinite;
-    display: inline-block;
-    text-shadow:
-      4px 4px 0 rgba(0,0,0,0.4),
-      8px 8px 0 rgba(0,0,0,0.2),
-      0 0 40px currentColor,
-      0 0 80px currentColor;
-    transform-style: preserve-3d;
-    line-height: 1.2;
-  }
+.card-title {
+  font-size: min(5.5vw, 22px);
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: Georgia, serif;
+  letter-spacing: 1px;
+}
+.card p {
+  font-size: min(4vw, 15px);
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  font-family: Georgia, serif;
+}
 
-  @keyframes textBlink {
-    0%   { color: #FF6B9D; text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 40px #FF6B9D, 0 0 80px #FF6B9D; }
-    16%  { color: #FFD700; text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 40px #FFD700, 0 0 80px #FFD700; }
-    32%  { color: #87CEEB; text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 40px #87CEEB, 0 0 80px #87CEEB; }
-    48%  { color: #98FFD6; text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 40px #98FFD6, 0 0 80px #98FFD6; }
-    64%  { color: #DDA0DD; text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 40px #DDA0DD, 0 0 80px #DDA0DD; }
-    80%  { color: #FFAD60; text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 40px #FFAD60, 0 0 80px #FFAD60; }
-    100% { color: #FF6B9D; text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 40px #FF6B9D, 0 0 80px #FF6B9D; }
-  }
+.c-innocent { border: 1px solid rgba(152,255,214,0.5); }
+.c-innocent .card-title { color: #98FFD6; }
 
-  @keyframes rotate3d {
-    0%, 100% { transform: rotateY(0deg) rotateX(0deg); }
-    25% { transform: rotateY(15deg) rotateX(5deg); }
-    75% { transform: rotateY(-15deg) rotateX(-5deg); }
-  }
+.c-health { border: 1px solid rgba(255,107,157,0.5); background: rgba(255,107,157,0.09); }
+.c-health .card-title { color: #FF9FC0; }
 
-  /* BRO text */
-  .bro-text {
-    font-family: 'Pacifico', cursive;
-    font-size: clamp(28px, 9vw, 70px);
-    animation: textBlink 1.5s 0.5s ease-in-out infinite, rotate3d 6s 1s ease-in-out infinite;
-    display: inline-block;
-    text-shadow: 4px 4px 0 rgba(0,0,0,0.4);
-    transform-style: preserve-3d;
-  }
+.c-wish { border: 1px solid rgba(255,215,0,0.5); background: rgba(255,215,0,0.07); }
+.c-wish .card-title { color: #FFD700; }
 
-  /* ANNU NAME */
-  .annu-name {
-    font-family: 'Dancing Script', cursive;
-    font-size: clamp(48px, 16vw, 130px);
-    animation: annuGlow 2s ease-in-out infinite, floatName 4s ease-in-out infinite;
-    display: inline-block;
-    background: linear-gradient(135deg, #FFD700, #FF6B9D, #87CEEB, #98FFD6, #DDA0DD);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientShift 3s ease infinite, floatName 4s ease-in-out infinite;
-    filter: drop-shadow(0 0 20px rgba(255,107,157,0.9)) drop-shadow(0 0 40px rgba(255,215,0,0.6));
-    margin: 5px 0;
-  }
+/* ===== HEART BEAT ===== */
+.hb { display: inline-block; animation: hbeat 0.8s ease-in-out infinite; }
+@keyframes hbeat {
+  0%,100% { transform: scale(1); }
+  14% { transform: scale(1.4); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.25); }
+}
 
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  @keyframes floatName {
-    0%, 100% { transform: translateY(0px) scale(1); }
-    50% { transform: translateY(-12px) scale(1.03); }
-  }
-
-  /* CARD */
-  .card {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 24px;
-    backdrop-filter: blur(20px);
-    padding: 22px 28px;
-    margin: 12px 0;
-    max-width: 500px;
-    width: 92%;
-    position: relative;
-    overflow: hidden;
-    transform-style: preserve-3d;
-    animation: cardFloat var(--cf, 5s) ease-in-out infinite;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    animation: shine 4s linear infinite;
-  }
-
-  @keyframes shine {
-    0% { left: -100%; }
-    100% { left: 200%; }
-  }
-
-  @keyframes cardFloat {
-    0%, 100% { transform: translateY(0) rotateX(0deg); }
-    50% { transform: translateY(-8px) rotateX(2deg); }
-  }
-
-  .card-title {
-    font-family: 'Dancing Script', cursive;
-    font-size: clamp(20px, 6vw, 28px);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .card p {
-    font-size: clamp(13px, 4vw, 16px);
-    line-height: 1.7;
-    color: rgba(255,255,255,0.88);
-  }
-
-  /* HEALTH CARD */
-  .health-card {
-    border-color: rgba(255,107,157,0.4);
-    background: rgba(255,107,157,0.08);
-  }
-  .health-card .card-title { color: #FF9FC0; }
-  .health-card .heart { animation: heartbeat 0.8s ease-in-out infinite; display: inline-block; }
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    14% { transform: scale(1.3); }
-    28% { transform: scale(1); }
-    42% { transform: scale(1.2); }
-    56% { transform: scale(1); }
-  }
-
-  /* INNOCENT CARD */
-  .innocent-card {
-    border-color: rgba(152,255,214,0.4);
-    background: rgba(152,255,214,0.06);
-  }
-  .innocent-card .card-title { color: var(--mint); }
-
-  /* WISH CARD */
-  .wish-card {
-    border-color: rgba(255,215,0,0.4);
-    background: rgba(255,215,0,0.06);
-  }
-  .wish-card .card-title { color: var(--gold); }
-
-  /* 3D ROTATING DECORATION */
-  .deco-3d {
-    position: fixed;
-    pointer-events: none;
-    font-size: 40px;
-    animation: orbit3d var(--od) linear infinite;
-    transform-origin: center;
-    z-index: 3;
-    opacity: 0.6;
-  }
-
-  @keyframes orbit3d {
-    0% { transform: rotateZ(0deg) translateX(var(--r)) rotateZ(0deg) scale(1); }
-    50% { transform: rotateZ(180deg) translateX(var(--r)) rotateZ(-180deg) scale(1.3); }
-    100% { transform: rotateZ(360deg) translateX(var(--r)) rotateZ(-360deg) scale(1); }
-  }
-
-  /* BOTTOM TEXT */
-  .bottom-msg {
-    font-family: 'Dancing Script', cursive;
-    font-size: clamp(16px, 5vw, 22px);
-    color: rgba(255,255,255,0.7);
-    text-align: center;
-    margin-top: 10px;
-    animation: textBlink 2s ease-in-out infinite;
-    padding: 0 20px;
-  }
-
-  /* RAINBOW BORDER */
-  .rainbow-border {
-    position: fixed;
-    inset: 0;
-    border: 3px solid transparent;
-    border-radius: 0;
-    background: linear-gradient(#0a0015, #0a0015) padding-box,
-                linear-gradient(var(--angle), #FF6B9D, #FFD700, #87CEEB, #98FFD6, #DDA0DD, #FF6B9D) border-box;
-    animation: rotateBorder 4s linear infinite;
-    pointer-events: none;
-    z-index: 9999;
-  }
-  @keyframes rotateBorder {
-    from { --angle: 0deg; }
-    to { --angle: 360deg; }
-  }
-  @property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
-
-  /* GLOWING SUN */
-  .sun-3d {
-    font-size: clamp(60px, 18vw, 110px);
-    animation: sunSpin 8s linear infinite, sunPulse 2s ease-in-out infinite;
-    display: inline-block;
-    filter: drop-shadow(0 0 20px #FFD700) drop-shadow(0 0 50px #FF8C00);
-  }
-  @keyframes sunSpin {
-    0% { transform: rotateY(0deg) rotateZ(0deg); }
-    100% { transform: rotateY(360deg) rotateZ(360deg); }
-  }
-  @keyframes sunPulse {
-    0%, 100% { filter: drop-shadow(0 0 20px #FFD700) drop-shadow(0 0 50px #FF8C00); }
-    50% { filter: drop-shadow(0 0 40px #FFD700) drop-shadow(0 0 80px #FF8C00) drop-shadow(0 0 120px #FFD700); }
-  }
-
-  /* SCROLL hint */
-  .scroll-hint {
-    position: fixed;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(255,255,255,0.4);
-    font-size: 12px;
-    animation: fadeInOut 2s ease-in-out infinite;
-    z-index: 100;
-    white-space: nowrap;
-  }
-  @keyframes fadeInOut {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.7; }
-  }
-
+/* ===== BOTTOM MSG ===== */
+.bmsg {
+  font-size: min(5.5vw, 22px);
+  color: rgba(255,255,255,0.75);
+  text-align: center;
+  margin-top: 14px;
+  font-family: Georgia, serif;
+  font-style: italic;
+  animation: blink3d 2s ease-in-out infinite;
+  padding: 0 20px;
+}
 </style>
 </head>
 <body>
 
-<!-- RAINBOW BORDER -->
-<div class="rainbow-border"></div>
+<div class="rborder"></div>
+<div id="stars"></div>
+<div id="aurora"></div>
+<div id="ptc"></div>
 
 <!-- COUNTDOWN -->
-<div id="countdown-screen">
-  <div class="countdown-number" id="cdNum">3</div>
-  <div class="countdown-label">✨ Loading something special... ✨</div>
+<div id="cd">
+  <div id="cdnum">3</div>
+  <div id="cdlabel">✨ Something Special Loading... ✨</div>
 </div>
 
-<!-- STARS -->
-<div class="stars" id="stars"></div>
+<!-- MAIN -->
+<div id="main">
+  <span class="sun">🌞</span>
+  <span class="gm">Good Morning</span>
+  <span class="bro">🌸 Bro! 🌸</span>
+  <span class="annu">✨ANNU✨</span>
 
-<!-- PARTICLES -->
-<div class="particle-container" id="particles"></div>
-
-<!-- AURORA -->
-<div class="aurora"></div>
-
-<!-- MAIN SCREEN -->
-<div id="main-screen">
-  <div class="main-content">
-
-    <!-- SUN -->
-    <div style="margin-bottom: -5px;">
-      <span class="sun-3d">🌞</span>
-    </div>
-
-    <!-- GOOD MORNING BRO -->
-    <div class="gm-wrapper">
-      <div class="gm-text">Good Morning</div>
-      <br>
-      <div class="bro-text">Bro! 🌸</div>
-    </div>
-
-    <!-- ANNU NAME -->
-    <div style="text-align:center; margin: 5px 0;">
-      <span class="annu-name">Annu</span>
-    </div>
-
-    <!-- INNOCENT CARD -->
-    <div class="card innocent-card" style="--cf: 4.5s;">
-      <div class="card-title">🦋 Sweet & Innocent</div>
-      <p>
-        Annu is such a sweet and innocent girl with a heart pure as morning dew 🌿.
-        Her own thoughts are unique, creative, and full of kindness — she sees the world
-        in her own beautiful way that makes everyone around her smile 💛.
-      </p>
-    </div>
-
-    <!-- HEALTH CARD -->
-    <div class="card health-card" style="--cf: 5s;">
-      <div class="card-title">
-        <span class="heart">❤️</span> Health &amp; Care
-      </div>
-      <p>
-        Annu's health has not been at its best lately, and that makes this Good Morning
-        even more special 🌷. May today bring her strength, warmth, and healing energy.
-        Take rest, eat well, and know that people care about you deeply, Annu 🌈.
-      </p>
-    </div>
-
-    <!-- WISH CARD -->
-    <div class="card wish-card" style="--cf: 6s;">
-      <div class="card-title">✨ Morning Wishes</div>
-      <p>
-        Rise and shine, Annu! 🌅 May your morning be as bright as your smile,
-        may the day bring you joy, laughter, and good health. You are special, 
-        you are loved, and you deserve all the beautiful things life has to offer! 💐
-      </p>
-    </div>
-
-    <!-- BOTTOM MSG -->
-    <div class="bottom-msg">🌸 Have a Beautiful Day, Annu! 🌸</div>
-    <div style="height: 50px;"></div>
-
+  <div class="card c-innocent" style="--cf:4.5s">
+    <div class="card-title">🦋 Sweet &amp; Innocent Girl</div>
+    <p>Annu is a truly innocent and sweet girl 💛 with her own unique thoughts and a pure heart. She sees the world beautifully in her own special way — always gentle, always genuine, and always kind to everyone around her 🌿.</p>
   </div>
-</div>
 
-<div class="scroll-hint" id="scrollHint">↑ Scroll to explore ↑</div>
+  <div class="card c-health" style="--cf:5.2s">
+    <div class="card-title"><span class="hb">❤️</span> Wishing You Good Health</div>
+    <p>Annu, your health has not been great lately 🌷 and that makes every Good Morning even more heartfelt. May today bring healing energy, warmth, and strength to your body. Rest well, eat well — you deserve to feel amazing! 🌈</p>
+  </div>
+
+  <div class="card c-wish" style="--cf:6s">
+    <div class="card-title">✨ Morning Wishes For You</div>
+    <p>Rise &amp; shine, Annu! 🌅 May your morning be as bright and beautiful as your smile. You are special, you are loved, and the world is a better place with you in it. Have a wonderful day full of joy! 💐🌟</p>
+  </div>
+
+  <div class="bmsg">🌸 Have a Beautiful Day, Annu! 🌸</div>
+</div>
 
 <script>
-  // STARS
-  const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const size = Math.random() * 3 + 1;
-    s.style.cssText = `
-      width: ${size}px; height: ${size}px;
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 100}%;
-      --d: ${Math.random() * 3 + 2}s;
-      animation-delay: ${Math.random() * 3}s;
-    `;
-    starsEl.appendChild(s);
+// STARS
+const sf = document.getElementById('stars');
+for (let i = 0; i < 130; i++) {
+  const s = document.createElement('div');
+  s.className = 'st';
+  const sz = Math.random() * 3 + 1;
+  s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--del:${(Math.random()*4).toFixed(1)}s;`;
+  sf.appendChild(s);
+}
+
+// PARTICLES
+const pf = document.getElementById('ptc');
+const emojis = ['🌸','🌷','💛','✨','🌟','🦋','💖','🌺','🌼','⭐','💗','🎀','🍀','🌻'];
+for (let i = 0; i < 28; i++) {
+  const p = document.createElement('div');
+  p.className = 'p';
+  p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  const dx = ((Math.random()-0.5)*180).toFixed(0);
+  p.style.cssText = `left:${Math.random()*100}%;--s:${(Math.random()*16+12).toFixed(0)}px;--d:${(Math.random()*8+5).toFixed(1)}s;--del:${(Math.random()*9).toFixed(1)}s;--dx:${dx}px;`;
+  pf.appendChild(p);
+}
+
+// COUNTDOWN
+let n = 3;
+const cdEl = document.getElementById('cdnum');
+const cdDiv = document.getElementById('cd');
+const mainEl = document.getElementById('main');
+
+function nextTick() {
+  n--;
+  if (n > 0) {
+    cdEl.style.opacity = '0';
+    cdEl.style.transform = 'scale(0.3) rotateY(90deg)';
+    cdEl.style.transition = 'all 0.3s ease';
+    setTimeout(() => {
+      cdEl.textContent = n;
+      cdEl.style.transition = 'all 0.35s ease';
+      cdEl.style.opacity = '1';
+      cdEl.style.transform = 'scale(1) rotateY(0deg)';
+      setTimeout(nextTick, 900);
+    }, 320);
+  } else {
+    cdEl.style.transition = 'all 0.4s ease';
+    cdEl.style.opacity = '0';
+    cdEl.style.transform = 'scale(3)';
+    setTimeout(() => {
+      cdDiv.classList.add('gone');
+      mainEl.classList.add('show');
+    }, 500);
   }
+}
 
-  // PARTICLES
-  const pEl = document.getElementById('particles');
-  const emojis = ['🌸', '🌷', '💛', '✨', '🌟', '🦋', '💖', '🌺', '🌼', '⭐', '💗', '🌈'];
-  for (let i = 0; i < 25; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    p.style.cssText = `
-      left: ${Math.random() * 100}%;
-      --s: ${Math.random() * 20 + 14}px;
-      --d: ${Math.random() * 8 + 6}s;
-      --dx: ${(Math.random() - 0.5) * 200}px;
-      animation-delay: ${Math.random() * 8}s;
-    `;
-    pEl.appendChild(p);
-  }
+setTimeout(nextTick, 1000);
 
-  // COUNTDOWN
-  let count = 3;
-  const cdNum = document.getElementById('cdNum');
-  const cdScreen = document.getElementById('countdown-screen');
-  const mainScreen = document.getElementById('main-screen');
-
-  function tick() {
-    count--;
-    if (count > 0) {
-      cdNum.style.transform = 'scale(0.5)';
-      cdNum.style.opacity = '0';
-      setTimeout(() => {
-        cdNum.textContent = count;
-        cdNum.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
-        cdNum.style.transform = 'scale(1)';
-        cdNum.style.opacity = '1';
-        setTimeout(tick, 1000);
-      }, 300);
-    } else {
-      // Show main
-      cdNum.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
-      cdNum.style.transform = 'scale(0)';
-      cdNum.style.opacity = '0';
-      setTimeout(() => {
-        cdScreen.classList.add('hide');
-        mainScreen.classList.add('show');
-        setTimeout(() => {
-          document.getElementById('scrollHint').style.display = 'none';
-        }, 5000);
-      }, 500);
-    }
-  }
-
-  // Initial transition
-  cdNum.style.transition = 'none';
-  setTimeout(tick, 1000);
-
-  // Touch 3D tilt for cards
-  const cards = document.querySelectorAll('.card');
-  cards.forEach(card => {
-    card.addEventListener('touchmove', e => {
-      const touch = e.touches[0];
-      const rect = card.getBoundingClientRect();
-      const x = (touch.clientX - rect.left) / rect.width - 0.5;
-      const y = (touch.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `rotateY(${x * 20}deg) rotateX(${-y * 20}deg) translateZ(10px)`;
-      card.style.transition = 'none';
-    });
-    card.addEventListener('touchend', () => {
-      card.style.transition = 'transform 0.5s ease';
-      card.style.transform = '';
-    });
+// Touch tilt on cards
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const r = card.getBoundingClientRect();
+    const x = (t.clientX - r.left) / r.width - 0.5;
+    const y = (t.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `rotateY(${x*18}deg) rotateX(${-y*18}deg) translateZ(12px)`;
+    card.style.transition = 'none';
+  }, {passive:true});
+  card.addEventListener('touchend', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.5s ease';
   });
+});
 </script>
 </body>
 </html>
